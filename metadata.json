@@ -1,0 +1,7 @@
+{
+  "name": "cidadeprefeito2",
+  "description": "A pedagogical city-building game focused on sustainability. This MVP allows placing roads and houses, managing a budget, and advancing through months. To run: set up a React + TypeScript project, add these files, install dependencies: react, react-dom, three, @react-three/fiber, @react-three/drei, uuid. Ensure Tailwind CSS is available (e.g., via CDN in index.html). agora vou mudar aqui para a cidade ir se criando sozinha",
+  "requestFramePermissions": [],
+  "prompt": "",
+  "majorCapabilities": []
+}
