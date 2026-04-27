@@ -57,6 +57,7 @@ export const ptBR = {
   TOOLTIP_AIR_QUALITY_EFFECT: "Qual. Ar: {value}/mês",
   TOOLTIP_WATER_QUALITY_EFFECT: "Qual. Água: {value}/mês", // Generic, ensure positive value for ETA is clear
   TOOLTIP_REQUIRES_RIVER: "Deve ser construída em um rio!",
+  TOOLTIP_CAPACITY: "Capacidade: {value} {unit}",
   
   // Game Messages
   NOT_ENOUGH_MONEY: "Dinheiro insuficiente para construir!",
@@ -118,7 +119,18 @@ export const ptBR = {
   DASHBOARD_SECTION_WELLBEING: "Bem-Estar e População",
   DASHBOARD_STAT_HAPPINESS: "Felicidade",
   DASHBOARD_STAT_POPULATION: "População",
+  DASHBOARD_STAT_JOBS: "Empregos",
   DASHBOARD_UNIT_CITIZENS: "cidadãos",
+  UNIT_CITIZENS: "cidadãos",
+  UNIT_CLIENTS: "clientes",
+  UNIT_VISITORS: "visitantes",
+  UNIT_MW: "MW",
+  UNIT_STUDENTS: "alunos",
+  UNIT_PATIENTS: "pacientes",
+  UNIT_OFFICERS: "oficiais",
+  UNIT_M3_DAY: "m³/dia",
+  UNIT_JOBS: "empregos",
+  UNIT_PERCENT: "%",
   DASHBOARD_STAT_HOUSING_CAPACITY: "Capacidade Habitacional",
   // DASHBOARD_STAT_DESIRED_POPULATION: "População Desejada", // Removido
   DASHBOARD_SECTION_ECONOMY: "Economia",
@@ -163,7 +175,6 @@ export const ptBR = {
   ENV_ELECTRICITY_PROD: "Produção",
   ENV_ELECTRICITY_CONS: "Consumo",
   ENV_ELECTRICITY_COVERAGE: "Cobertura",
-  UNIT_MW: "MW",
   ENV_POPULATION_HOUSING_TITLE: "População e Moradia",
   ENV_POPULATION: "População",
   ENV_HOUSES: "Casas",

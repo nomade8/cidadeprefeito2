@@ -199,6 +199,7 @@ export const useGameLogic = () => {
     let currentMonthlyIncome = 0;
     let currentMonthlyMaintenance = 0;
     let currentHousingCapacity = 0; 
+    let totalJobs = 0;
 
     const buildings = context.buildings || [];
     const isBuildingsArray = Array.isArray(buildings);
@@ -218,6 +219,10 @@ export const useGameLogic = () => {
 
         if (config.housingProvided) {
           currentHousingCapacity += config.housingProvided;
+        }
+
+        if (building.type === BuildingType.TECH_INDUSTRY || building.type === BuildingType.HEAVY_INDUSTRY) {
+          if (config.capacity) totalJobs += config.capacity;
         }
 
         switch (building.type) {
@@ -255,7 +260,7 @@ export const useGameLogic = () => {
       totalApartments, totalSchools, totalHealthPosts, totalPoliceStations, 
       totalWaterTreatmentPlants, totalTechIndustries, totalHeavyIndustries,
       monthlyIncome: currentMonthlyIncome, monthlyMaintenance: currentMonthlyMaintenance,
-      population, housingCapacity: currentHousingCapacity, netCashFlow,
+      population, housingCapacity: currentHousingCapacity, totalJobs, netCashFlow,
     };
   }, [context.buildings]); 
 

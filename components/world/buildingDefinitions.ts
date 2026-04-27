@@ -108,18 +108,17 @@ const roadParts = [
 
 // --- Park Definition ---
 const parkGroundHeight = TILE_SIZE * 0.05;
-const parkTreeTrunkHeight = TILE_SIZE * 0.3;
-const parkTreeTrunkRadius = TILE_SIZE * 0.05;
-const parkTreeCanopyHeight = TILE_SIZE * 0.4;
-const parkTreeCanopyRadius = TILE_SIZE * 0.2;
+const parkTreeTrunkHeight = TILE_SIZE * 0.4;
+const parkTreeTrunkRadius = TILE_SIZE * 0.04;
+const parkTreeCanopyRadius = TILE_SIZE * 0.25;
 
 const parkGroundGeo = new THREE.BoxGeometry(TILE_SIZE * 0.95, parkGroundHeight, TILE_SIZE * 0.95);
 const parkTreeTrunkGeo = new THREE.CylinderGeometry(parkTreeTrunkRadius, parkTreeTrunkRadius, parkTreeTrunkHeight, 8);
-const parkTreeCanopyGeo = new THREE.ConeGeometry(parkTreeCanopyRadius, parkTreeCanopyHeight, 8);
+const parkTreeCanopyGeo = new THREE.SphereGeometry(parkTreeCanopyRadius, 8, 8);
 
 const parkTreePositions = [
-    { x: -TILE_SIZE * 0.3, z: -TILE_SIZE * 0.3 },
-    { x: TILE_SIZE * 0.3, z: TILE_SIZE * 0.2 },
+    { x: -TILE_SIZE * 0.3, z: -TILE_SIZE * 0.3, s: 1.1 },
+    { x: TILE_SIZE * 0.3, z: TILE_SIZE * 0.2, s: 0.7 },
 ];
 
 const parkParts = [
@@ -140,7 +139,11 @@ const parkParts = [
       name: `canopy-${index}`,
       geometry: parkTreeCanopyGeo,
       material: treeCanopyMaterial,
-      relativeTransform: new THREE.Matrix4().setPosition(treePos.x, parkGroundHeight + parkTreeTrunkHeight + parkTreeCanopyHeight / 2, treePos.z),
+      relativeTransform: new THREE.Matrix4().compose(
+        new THREE.Vector3(treePos.x, parkGroundHeight + parkTreeTrunkHeight + parkTreeCanopyRadius * treePos.s * 0.8, treePos.z),
+        new THREE.Quaternion(),
+        new THREE.Vector3(treePos.s, treePos.s, treePos.s)
+      ),
     },
   ]),
 ];
@@ -149,8 +152,8 @@ const parkParts = [
 const marketBaseWidth = TILE_SIZE * 0.9;
 const marketBaseDepth = TILE_SIZE * 0.9;
 const marketBaseHeight = TILE_SIZE * 0.5;
-const marketRoofHeight = TILE_SIZE * 0.3;
-const marketAwningDepth = TILE_SIZE * 0.4;
+const marketRoofHeight = TILE_SIZE * 0.1;
+const marketAwningDepth = TILE_SIZE * 0.2;
 const marketAwningWidth = marketBaseWidth;
 const marketAwningHeight = TILE_SIZE * 0.1;
 

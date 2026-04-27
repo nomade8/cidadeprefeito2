@@ -258,6 +258,7 @@ const GameUI: React.FC<GameUIProps> = ({ containerRef }) => {
                     if(config.airQualityEffectMonthly) tooltipParts.push(t('TOOLTIP_AIR_QUALITY_EFFECT', {value: config.airQualityEffectMonthly.toFixed(2)}));
                     if(config.waterQualityEffectMonthly) tooltipParts.push(t('TOOLTIP_WATER_QUALITY_EFFECT', {value: config.waterQualityEffectMonthly.toFixed(2)}));
                     if(config.requiresRiver) tooltipParts.push(t('TOOLTIP_REQUIRES_RIVER'));
+                    if(config.capacity && config.capacityUnit) tooltipParts.push(t('TOOLTIP_CAPACITY', {value: config.capacity, unit: t(config.capacityUnit as any)}));
 
                     const title = `${typeName} - ${tooltipParts.join(', ')}`;
 
@@ -291,6 +292,18 @@ const GameUI: React.FC<GameUIProps> = ({ containerRef }) => {
                       <Trash2 size={18} />
                   </Button>
                 </div>
+                {selectedBuildingType && !isDemolishModeActive && !isPaused && (
+                  <div className="mt-1.5 px-2 py-1 bg-slate-800/50 rounded border border-slate-700/30 flex justify-between items-center gap-2">
+                    <span className="text-[10px] font-semibold text-sky-100 uppercase tracking-wider">
+                      {t(`BUILDING_${selectedBuildingType}_NAME` as TranslationKeys)}
+                    </span>
+                    {BUILDING_DATA[selectedBuildingType].capacity && BUILDING_DATA[selectedBuildingType].capacityUnit && (
+                      <span className="text-[10px] text-sky-300 font-mono">
+                        {t('TOOLTIP_CAPACITY', { value: BUILDING_DATA[selectedBuildingType].capacity, unit: t(BUILDING_DATA[selectedBuildingType].capacityUnit as any) })}
+                      </span>
+                    )}
+                  </div>
+                )}
                 {isDemolishModeActive && !isPaused && (
                   <p className="text-[10px] text-yellow-300 mt-2 italic text-center">{t('DEMOLISH_MODE_ACTIVE_INFO', {cost: formatCurrency(DEMOLITION_COST)})}</p>
                 )}

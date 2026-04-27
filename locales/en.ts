@@ -57,6 +57,7 @@ export const en = {
   TOOLTIP_AIR_QUALITY_EFFECT: "Air Qual: {value}/mo",
   TOOLTIP_WATER_QUALITY_EFFECT: "Water Qual: {value}/mo", // Generic, ensure positive value for WTP is clear
   TOOLTIP_REQUIRES_RIVER: "Must be built on a river!",
+  TOOLTIP_CAPACITY: "Capacity: {value} {unit}",
   
   // Game Messages
   NOT_ENOUGH_MONEY: "Not enough money to build!",
@@ -118,7 +119,18 @@ export const en = {
   DASHBOARD_SECTION_WELLBEING: "Wellbeing & Population",
   DASHBOARD_STAT_HAPPINESS: "Happiness",
   DASHBOARD_STAT_POPULATION: "Population",
+  DASHBOARD_STAT_JOBS: "Jobs",
   DASHBOARD_UNIT_CITIZENS: "citizens",
+  UNIT_CITIZENS: "citizens",
+  UNIT_CLIENTS: "clients",
+  UNIT_VISITORS: "visitors",
+  UNIT_MW: "MW",
+  UNIT_STUDENTS: "students",
+  UNIT_PATIENTS: "patients",
+  UNIT_OFFICERS: "officers",
+  UNIT_M3_DAY: "m³/day",
+  UNIT_JOBS: "jobs",
+  UNIT_PERCENT: "%",
   DASHBOARD_STAT_HOUSING_CAPACITY: "Housing Capacity",
   // DASHBOARD_STAT_DESIRED_POPULATION: "Desired Population", // Removed
   DASHBOARD_SECTION_ECONOMY: "Economy",
@@ -163,7 +175,6 @@ export const en = {
   ENV_ELECTRICITY_PROD: "Production",
   ENV_ELECTRICITY_CONS: "Consumption",
   ENV_ELECTRICITY_COVERAGE: "Coverage",
-  UNIT_MW: "MW",
   ENV_POPULATION_HOUSING_TITLE: "Population & Housing",
   ENV_POPULATION: "Population",
   ENV_HOUSES: "Houses",

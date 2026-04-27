@@ -47,7 +47,7 @@ const Dashboard: React.FC<DashboardProps> = ({ isOpen, onClose }) => {
     totalFossilPowerPlants, totalSolarPowerPlants, totalHydroPowerPlants, 
     totalApartments, totalSchools, totalHealthPosts, totalPoliceStations, 
     totalWaterTreatmentPlants, totalTechIndustries, totalHeavyIndustries,
-    monthlyIncome, monthlyMaintenance, population, housingCapacity, 
+    monthlyIncome, monthlyMaintenance, population, housingCapacity, totalJobs,
     // desiredPopulation, // Removed
     netCashFlow, happiness, gameOver, translate: t, currentLanguage,
     trafficCongestion, activeEvents
@@ -122,6 +122,7 @@ const Dashboard: React.FC<DashboardProps> = ({ isOpen, onClose }) => {
             <StatItem label={t('DASHBOARD_STAT_HAPPINESS')} value={`${happinessPercentage}%`} icon={happinessIcon} positiveIsGood={happinessPercentage >= 50} currentLanguage={currentLanguage}/>
             <StatItem label={t('DASHBOARD_STAT_POPULATION')} value={population} unit={t('DASHBOARD_UNIT_CITIZENS')} icon="👥" currentLanguage={currentLanguage}/>
             <StatItem label={t('DASHBOARD_STAT_HOUSING_CAPACITY')} value={housingCapacity} unit={t('DASHBOARD_UNIT_CITIZENS')} icon="🏠" currentLanguage={currentLanguage}/>
+            <StatItem label={t('DASHBOARD_STAT_JOBS')} value={totalJobs} icon="💼" currentLanguage={currentLanguage}/>
         </div>
 
         {activeEvents && activeEvents.length > 0 && (

@@ -17,6 +17,8 @@ export const BUILDING_DATA: BuildingConfig = {
   [BuildingType.ROAD]: { 
     cost: 50, 
     maintenance: 10,
+    capacity: 100,
+    capacityUnit: "UNIT_PERCENT",
     electricityConsumption: 0.1, // Minimal for street lights
     airQualityEffectMonthly: DEFAULT_AIR_QUALITY_EFFECT_ROAD, // Vehicle pollution
     waterQualityEffectMonthly: -0.01, // Runoff
@@ -26,6 +28,8 @@ export const BUILDING_DATA: BuildingConfig = {
     cost: 250, 
     income: 50,
     housingProvided: PEOPLE_PER_HOUSE,
+    capacity: PEOPLE_PER_HOUSE,
+    capacityUnit: "UNIT_CITIZENS",
     electricityConsumption: DEFAULT_ELECTRICITY_CONSUMPTION * 0.5,
     airQualityEffectMonthly: -0.02,
     waterQualityEffectMonthly: -0.02,
@@ -35,6 +39,8 @@ export const BUILDING_DATA: BuildingConfig = {
     cost: 1000, 
     income: 150, 
     maintenance: 40,
+    capacity: 60,
+    capacityUnit: "UNIT_CLIENTS",
     electricityConsumption: DEFAULT_ELECTRICITY_CONSUMPTION * 2,
     airQualityEffectMonthly: -0.05,
     waterQualityEffectMonthly: -0.03,
@@ -44,6 +50,8 @@ export const BUILDING_DATA: BuildingConfig = {
     cost: 500, 
     income: 0, 
     maintenance: 20,
+    capacity: 100,
+    capacityUnit: "UNIT_VISITORS",
     electricityConsumption: 0.2, // Lights, water pumps
     airQualityEffectMonthly: 0.3, // Improves air quality
     waterQualityEffectMonthly: 0.1, // Can help with runoff
@@ -54,6 +62,8 @@ export const BUILDING_DATA: BuildingConfig = {
     income: 0, 
     maintenance: 100,
     electricityProduction: 100, // MW
+    capacity: 100,
+    capacityUnit: "UNIT_MW",
     airQualityEffectMonthly: DEFAULT_AIR_QUALITY_EFFECT_INDUSTRIAL * 2.5, // -0.5
     waterQualityEffectMonthly: DEFAULT_WATER_QUALITY_EFFECT_INDUSTRIAL,   // -0.1
     biodiversityEffectMonthly: -0.1,
@@ -62,6 +72,8 @@ export const BUILDING_DATA: BuildingConfig = {
     cost: 4500,
     maintenance: 50,
     electricityProduction: 70, // MW
+    capacity: 70,
+    capacityUnit: "UNIT_MW",
     airQualityEffectMonthly: 0.05, // Slight positive due to land use change, or neutral
     waterQualityEffectMonthly: 0,
     biodiversityEffectMonthly: -0.05, // Land use
@@ -70,6 +82,8 @@ export const BUILDING_DATA: BuildingConfig = {
     cost: 6000,
     maintenance: 120,
     electricityProduction: 150, // MW
+    capacity: 150,
+    capacityUnit: "UNIT_MW",
     airQualityEffectMonthly: 0,
     waterQualityEffectMonthly: 0, // Assuming minimal operational impact after construction
     biodiversityEffectMonthly: -0.2, // Impact of dam on river ecosystem
@@ -80,6 +94,8 @@ export const BUILDING_DATA: BuildingConfig = {
     income: 300,
     maintenance: 60,
     housingProvided: PEOPLE_PER_APARTMENT,
+    capacity: PEOPLE_PER_APARTMENT,
+    capacityUnit: "UNIT_CITIZENS",
     electricityConsumption: DEFAULT_ELECTRICITY_CONSUMPTION * 1.5,
     airQualityEffectMonthly: -0.04,
     waterQualityEffectMonthly: -0.04,
@@ -89,6 +105,8 @@ export const BUILDING_DATA: BuildingConfig = {
     cost: 1800,
     maintenance: 150,
     happinessEffectMonthly: HAPPINESS_PER_SCHOOL_MONTHLY,
+    capacity: 120,
+    capacityUnit: "UNIT_STUDENTS",
     electricityConsumption: DEFAULT_ELECTRICITY_CONSUMPTION * 1.2,
     airQualityEffectMonthly: -0.01,
     waterQualityEffectMonthly: -0.01,
@@ -98,6 +116,8 @@ export const BUILDING_DATA: BuildingConfig = {
     cost: 1200,
     maintenance: 100,
     happinessEffectMonthly: HAPPINESS_PER_HEALTH_POST_MONTHLY,
+    capacity: 50,
+    capacityUnit: "UNIT_PATIENTS",
     electricityConsumption: DEFAULT_ELECTRICITY_CONSUMPTION * 1,
     airQualityEffectMonthly: -0.01,
     waterQualityEffectMonthly: -0.01,
@@ -107,6 +127,8 @@ export const BUILDING_DATA: BuildingConfig = {
     cost: 1500,
     maintenance: 120,
     happinessEffectMonthly: HAPPINESS_PER_POLICE_STATION_MONTHLY,
+    capacity: 80,
+    capacityUnit: "UNIT_OFFICERS",
     electricityConsumption: DEFAULT_ELECTRICITY_CONSUMPTION * 0.8,
     airQualityEffectMonthly: -0.01,
     waterQualityEffectMonthly: -0.01,
@@ -115,6 +137,8 @@ export const BUILDING_DATA: BuildingConfig = {
   [BuildingType.WATER_TREATMENT_PLANT]: {
     cost: 2800,
     maintenance: 150,
+    capacity: 1500,
+    capacityUnit: "UNIT_M3_DAY",
     electricityConsumption: DEFAULT_ELECTRICITY_CONSUMPTION * 2.0,
     waterQualityEffectMonthly: 0.8, // Significant positive impact
     airQualityEffectMonthly: -0.02, // Minor operational impact
@@ -124,6 +148,8 @@ export const BUILDING_DATA: BuildingConfig = {
     cost: 5000,
     income: 800,
     maintenance: 250,
+    capacity: 100,
+    capacityUnit: "UNIT_JOBS",
     electricityConsumption: DEFAULT_ELECTRICITY_CONSUMPTION * 5.0,
     airQualityEffectMonthly: -0.01,
     waterQualityEffectMonthly: -0.01,
@@ -134,6 +160,8 @@ export const BUILDING_DATA: BuildingConfig = {
     cost: 3500,
     income: 1200,
     maintenance: 400,
+    capacity: 200,
+    capacityUnit: "UNIT_JOBS",
     electricityConsumption: DEFAULT_ELECTRICITY_CONSUMPTION * 8.0,
     airQualityEffectMonthly: -0.8, 
     waterQualityEffectMonthly: -0.6, 

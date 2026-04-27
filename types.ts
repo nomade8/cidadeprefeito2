@@ -98,8 +98,11 @@ export interface GameState {
   // Policies
   policies: PoliciesState;
 
-  // Demand State
+  // Demand State (DEACTIVATED)
   demands: CitizenDemand[];
+
+  // Game Speed / Flow
+  isPaused: boolean;
 
   // Time of Day (0 to 1, where 0 is start of day, 0.5 is noon, 1.0 is end of day)
   timeOfDay: number; 
@@ -127,6 +130,8 @@ export interface BuildingData {
   waterQualityEffectMonthly?: number; // Change per month
   biodiversityEffectMonthly?: number; // Change per month
   requiresRiver?: boolean; // True if must be built on a river tile
+  capacity?: number; // General capacity value
+  capacityUnit?: string; // Unit for the capacity (e.g., "Citizens", "MW")
 }
 
 export type BuildingConfig = {
