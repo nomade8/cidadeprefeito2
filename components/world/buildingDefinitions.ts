@@ -35,6 +35,8 @@ const apartmentRoofMaterial = new THREE.MeshStandardMaterial({ color: "#778899",
 const apartmentWindowMaterial = new THREE.MeshStandardMaterial({ color: "#ADD8E6", side: THREE.DoubleSide, emissive: "#000000" });
 const apartmentDoorMaterial = new THREE.MeshStandardMaterial({ color: "#8B4513", side: THREE.DoubleSide });
 const solarPanelMaterial = new THREE.MeshStandardMaterial({ color: "#191970", roughness: 0.1, metalness: 0.8 });
+const hydroDamMaterial = new THREE.MeshStandardMaterial({ color: "#ed6d05", roughness: 0.6, metalness: 0.3 });
+const hydroPowerhouseMaterial = new THREE.MeshStandardMaterial({ color: "#D3D3D3", roughness: 0.7, metalness: 0.1 });
 
 // --- Shared Detail Constants ---
 const windowGeo = new THREE.PlaneGeometry(TILE_SIZE * 0.12, TILE_SIZE * 0.12);
@@ -473,6 +475,45 @@ const heavyParts = [
     }))
 ];
 
+// --- Hydro Power Plant Definition ---
+const hydroDamWidth = TILE_SIZE * 0.95;
+const hydroDamHeight = TILE_SIZE * 0.7;
+const hydroDamThicknessTop = TILE_SIZE * 0.2;
+const hydroDamThicknessBottom = TILE_SIZE * 0.4;
+const hydroPowerhouseWidth = TILE_SIZE * 0.4;
+const hydroPowerhouseHeight = TILE_SIZE * 0.35;
+const hydroPowerhouseDepth = TILE_SIZE * 0.3;
+
+const hydroDamShape = new THREE.Shape();
+hydroDamShape.moveTo(-hydroDamThicknessBottom / 2, 0);
+hydroDamShape.lineTo(hydroDamThicknessBottom / 2, 0);
+hydroDamShape.lineTo(hydroDamThicknessTop / 2, hydroDamHeight);
+hydroDamShape.lineTo(-hydroDamThicknessTop / 2, hydroDamHeight);
+hydroDamShape.closePath();
+
+const hydroDamExtrudeSettings = {
+    steps: 1,
+    depth: hydroDamWidth,
+    bevelEnabled: false,
+};
+const hydroDamGeo = new THREE.ExtrudeGeometry(hydroDamShape, hydroDamExtrudeSettings);
+const hydroPowerhouseGeo = new THREE.BoxGeometry(hydroPowerhouseWidth, hydroPowerhouseHeight, hydroPowerhouseDepth);
+
+const hydroParts = [
+    {
+        name: 'dam',
+        geometry: hydroDamGeo,
+        material: hydroDamMaterial,
+        relativeTransform: new THREE.Matrix4().makeRotationY(Math.PI / 2),
+    },
+    {
+        name: 'powerhouse',
+        geometry: hydroPowerhouseGeo,
+        material: hydroPowerhouseMaterial,
+        relativeTransform: new THREE.Matrix4().setPosition(0, hydroDamHeight + hydroPowerhouseHeight / 2 - TILE_SIZE * 0.1, 0),
+    }
+];
+
 export interface BuildingPart {
   name: string;
   geometry: THREE.BufferGeometry;
@@ -491,7 +532,7 @@ export const buildingDefinitions: Record<BuildingType, BuildingTypeDefinition | 
   [BuildingType.MARKET]: { parts: marketParts },
   [BuildingType.POWER_PLANT]: { parts: powerPlantParts }, 
   [BuildingType.SOLAR_POWER_PLANT]: { parts: solarPlantParts },
-  [BuildingType.HYDRO_POWER_PLANT]: undefined, // Keep Hydro non-instanced for now (it needs river logic)
+  [BuildingType.HYDRO_POWER_PLANT]: { parts: hydroParts },
   [BuildingType.APARTMENT]: { parts: apartmentParts },
   [BuildingType.SCHOOL]: { parts: schoolParts },
   [BuildingType.HEALTH_POST]: { parts: healthParts },

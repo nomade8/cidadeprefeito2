@@ -5,7 +5,6 @@ import { useGame } from '../../context/GameContext';
 import { BuildingType } from '../../types';
 import { gridToWorldCoords } from '../../utils/gridUtils';
 import Terrain from './Terrain';
-import HydroPowerPlant from './HydroPowerPlant'; 
 import Mountain from './Mountain'; 
 import CameraControlsComponent from './CameraControls';
 import InstancedBuildingRenderer from './InstancedBuildingRenderer';
@@ -58,10 +57,6 @@ const Scene: React.FC = () => {
     }
   }
 
-  const nonInstancedBuildings = Array.isArray(buildings) 
-    ? buildings.filter(building => !buildingDefinitions[building.type])
-    : [];
-
   return (
     <>
       <color attach="background" args={[currentFogColor]} />
@@ -87,18 +82,6 @@ const Scene: React.FC = () => {
       {mountainTiles && mountainTiles.length > 0 && <Mountain position={mountainWorldPos} baseSize={mountainBaseSize} />}
 
       <InstancedBuildingRenderer />
-
-      {/* Render non-instanced buildings individually (for those not yet converted) */}
-      {nonInstancedBuildings.map((building) => {
-        const worldPos = gridToWorldCoords(building.position.x, building.position.z, 0);
-        switch (building.type) {
-          // Cases for HOUSE, ROAD, PARK, MARKET are removed as they are now instanced
-          case BuildingType.HYDRO_POWER_PLANT:
-            return <HydroPowerPlant key={building.id} position={worldPos} />;
-          default:
-            return null;
-        }
-      })}
 
       <fog attach="fog" args={[currentFogColor, fogNear, fogFar]} />
     </>
