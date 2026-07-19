@@ -94,6 +94,7 @@ export interface GameState {
 
   // Demolition Mode
   isDemolishModeActive: boolean;
+  isPaused: boolean;
 
   // Policies
   policies: PoliciesState;

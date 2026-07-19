@@ -3,7 +3,7 @@ import { GridPosition, PolicyLevel } from "../types";
 
 export const INITIAL_MONEY = 10000;
 export const INITIAL_MONTH = 1;
-export const GRID_SIZE = 30; 
+export const GRID_SIZE = 40; 
 export const TILE_SIZE = 2; 
 export const PLANE_SIZE = GRID_SIZE * TILE_SIZE; 
 

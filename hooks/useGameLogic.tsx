@@ -181,6 +181,10 @@ export const useGameLogic = () => {
     context.dispatch({ type: 'TOGGLE_PAUSE' });
   };
 
+  const dismissDemand = (id: string) => {
+    context.dispatch({ type: 'DISMISS_DEMAND', payload: id });
+  };
+
   const calculatedMetrics = useMemo(() => {
     let totalHouses = 0;
     let totalRoads = 0; 
@@ -283,6 +287,7 @@ export const useGameLogic = () => {
     trafficCongestion: context.trafficCongestion,
     activeEvents: context.activeEvents,
     timeOfDay: context.timeOfDay,
+    demands: context.demands,
     
     // Terrain
     riverTiles: context.riverTiles,
@@ -314,6 +319,7 @@ export const useGameLogic = () => {
     clearMessage,
     setPolicy, 
     togglePause,
+    dismissDemand,
 
     // Helpers from context
     canAfford: context.canAfford,
