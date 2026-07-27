@@ -2,7 +2,7 @@
 
 import { useGame } from '../context/GameContext';
 import { useLanguage, Language } from '../context/LanguageContext';
-import { BuildingType, GridPosition, TranslationKeys, PoliciesState, PolicyLevel } from '../types'; 
+import { BuildingType, GridPosition, TranslationKeys, PoliciesState, PolicyLevel, ViewLayer } from '../types'; 
 import { BUILDING_DATA } from '../data/buildingData'; 
 import { MARKET_INCOME_POWER_BOOST_FACTOR, DEMOLITION_COST, APARTMENT_UNLOCK_MANDATE } from '../game/settings';
 import { useMemo } from 'react';
@@ -72,7 +72,7 @@ export const useGameLogic = () => {
   const selectBuildingType = (type: BuildingType | null) => {
     if (context.mandateEnded || context.isPaused) return; 
 
-    if (type === BuildingType.APARTMENT || type === BuildingType.HOUSE) { 
+    if (type === BuildingType.APARTMENT || type === BuildingType.HOUSE || type === BuildingType.POOR_HOUSE) { 
       context.dispatch({ type: 'SET_MESSAGE', payload: { key: 'APARTMENTS_AUTO_ONLY' } });
       return;
     }
@@ -95,7 +95,7 @@ export const useGameLogic = () => {
       return;
     }
     
-    if (context.selectedBuildingType === BuildingType.APARTMENT || context.selectedBuildingType === BuildingType.HOUSE) { 
+    if (context.selectedBuildingType === BuildingType.APARTMENT || context.selectedBuildingType === BuildingType.HOUSE || context.selectedBuildingType === BuildingType.POOR_HOUSE) { 
       context.dispatch({ type: 'SET_MESSAGE', payload: { key: 'APARTMENTS_AUTO_ONLY' } }); // Generic message can cover both
       return;
     }
@@ -117,10 +117,7 @@ export const useGameLogic = () => {
     if (context.gameOver || context.mandateEnded || context.isPaused || context.isDemolishModeActive) return;
 
     const costPerUnit = BUILDING_DATA[type].cost;
-    const totalMaxCost = costPerUnit * positions.length;
     
-    // We don't strictly check full cost here because the reducer will build as many as possible
-    // but we can at least check if they can afford one.
     if (!context.canAfford(costPerUnit)) {
       context.dispatch({ type: 'SET_MESSAGE', payload: { key: 'NOT_ENOUGH_MONEY' } });
       return;
@@ -181,12 +178,18 @@ export const useGameLogic = () => {
     context.dispatch({ type: 'TOGGLE_PAUSE' });
   };
 
+  const toggleViewLayer = (layer: ViewLayer) => {
+    if (context.mandateEnded || context.gameOver) return;
+    context.dispatch({ type: 'TOGGLE_VIEW_LAYER', payload: layer });
+  };
+
   const dismissDemand = (id: string) => {
     context.dispatch({ type: 'DISMISS_DEMAND', payload: id });
   };
 
   const calculatedMetrics = useMemo(() => {
     let totalHouses = 0;
+    let totalPoorHouses = 0;
     let totalRoads = 0; 
     let totalMarkets = 0;
     let totalParks = 0;
@@ -231,6 +234,7 @@ export const useGameLogic = () => {
 
         switch (building.type) {
           case BuildingType.HOUSE: totalHouses++; break;
+          case BuildingType.POOR_HOUSE: totalPoorHouses++; break;
           case BuildingType.ROAD: totalRoads++; break;
           case BuildingType.MARKET:
             totalMarkets++;
@@ -255,11 +259,11 @@ export const useGameLogic = () => {
       });
     }
 
-    const population = currentHousingCapacity; // Population is now equivalent to housing capacity
+    const population = currentHousingCapacity; 
     const netCashFlow = currentMonthlyIncome - currentMonthlyMaintenance;
 
     return {
-      totalHouses, totalRoads, totalMarkets, totalParks, 
+      totalHouses, totalPoorHouses, totalRoads, totalMarkets, totalParks, 
       totalFossilPowerPlants, totalSolarPowerPlants, totalHydroPowerPlants,
       totalApartments, totalSchools, totalHealthPosts, totalPoliceStations, 
       totalWaterTreatmentPlants, totalTechIndustries, totalHeavyIndustries,
@@ -277,11 +281,11 @@ export const useGameLogic = () => {
     selectedBuildingType: context.selectedBuildingType,
     gameOver: context.gameOver, 
     happiness: context.happiness,
-    // desiredPopulation: context.desiredPopulation, // Removed
     mandateEnded: context.mandateEnded,
     currentMandate: context.currentMandate,
     mandateTargetMonth: context.mandateTargetMonth,
     isDemolishModeActive: context.isDemolishModeActive,
+    activeViewLayer: context.activeViewLayer,
     policies: context.policies, 
     isPaused: context.isPaused,
     trafficCongestion: context.trafficCongestion,
@@ -319,6 +323,7 @@ export const useGameLogic = () => {
     clearMessage,
     setPolicy, 
     togglePause,
+    toggleViewLayer,
     dismissDemand,
 
     // Helpers from context

@@ -132,6 +132,7 @@ export const initialState: GameState = {
   electricityCoveragePercent: 100, 
   electricityDemandSatisfaction: 100,
   isDemolishModeActive: false,
+  activeViewLayer: 'NONE',
   policies: {
     commerceTaxLevel: PolicyLevel.NORMAL,
     propertyTaxLevel: PolicyLevel.NORMAL,
@@ -143,6 +144,17 @@ export const initialState: GameState = {
   demands: [],
   timeOfDay: 0.5, // Start at noon
 };
+
+function hasInfrastructureForHouse(position: GridPosition, buildings: Building[], gridSize: number): boolean {
+  const hasRoad = isBuildingTypeNearby(position, buildings, gridSize, ROAD_PROXIMITY_FOR_HOUSING, BuildingType.ROAD);
+  const serviceTypes = [
+    BuildingType.SCHOOL, BuildingType.HEALTH_POST, BuildingType.POLICE_STATION, 
+    BuildingType.PARK, BuildingType.MARKET, BuildingType.POWER_PLANT, 
+    BuildingType.SOLAR_POWER_PLANT, BuildingType.HYDRO_POWER_PLANT, BuildingType.WATER_TREATMENT_PLANT
+  ];
+  const hasService = serviceTypes.some(type => isBuildingTypeNearby(position, buildings, gridSize, SERVICE_PROXIMITY_FOR_HOUSING, type));
+  return hasRoad || hasService;
+}
 
 // Helper to shuffle an array
 function shuffleArray<T>(array: T[]): T[] {
@@ -293,6 +305,11 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       return { ...state, timeOfDay: action.payload };
     }
 
+    case 'TOGGLE_VIEW_LAYER': {
+      const nextLayer = state.activeViewLayer === action.payload ? 'NONE' : action.payload;
+      return { ...state, activeViewLayer: nextLayer };
+    }
+
     case 'DISMISS_DEMAND': {
       return { ...state, demands: state.demands.filter(d => d.id !== action.payload) };
     }
@@ -349,7 +366,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
          return { ...state, messageKey: 'ONLY_ROADS_ON_RIVER' };
       }
       
-      if (type === BuildingType.APARTMENT || type === BuildingType.HOUSE) { // Houses also auto-only
+      if (type === BuildingType.APARTMENT || type === BuildingType.HOUSE || type === BuildingType.POOR_HOUSE) { // Houses also auto-only
           return { ...state, messageKey: 'APARTMENTS_AUTO_ONLY'}; // Generic message can cover both
       }
 
@@ -527,7 +544,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         if (building.type === BuildingType.POWER_PLANT || building.type === BuildingType.SOLAR_POWER_PLANT || building.type === BuildingType.HYDRO_POWER_PLANT) {
             powerPlantsCount++;
         }
-        if (building.type === BuildingType.HOUSE || building.type === BuildingType.APARTMENT) {
+        if (building.type === BuildingType.HOUSE || building.type === BuildingType.POOR_HOUSE || building.type === BuildingType.APARTMENT) {
             totalResidentialCountAtStartOfMonth++;
             const qId = getQuadrantId(building.position, state.gridSize);
             if (qId !== -1) residentialPerQuadrantAtStartOfMonth[qId]++;
@@ -542,7 +559,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         }
         incomeThisMonth += currentBuildingIncome;
 
-        if ((building.type === BuildingType.HOUSE || building.type === BuildingType.APARTMENT) && config.income) {
+        if ((building.type === BuildingType.HOUSE || building.type === BuildingType.POOR_HOUSE || building.type === BuildingType.APARTMENT) && config.income) {
             const propertyTaxAmount = config.income * (PROPERTY_TAX_CONFIG[state.policies.propertyTaxLevel].ratePercent / 100);
             incomeThisMonth += propertyTaxAmount;
         }
@@ -655,6 +672,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       let housesSpawnedThisMonthCount = 0;
       let apartmentsSpawnedOnEmptyLotsCount = 0;
       let apartmentsConvertedFromHousesCount = 0;
+      let poorHousesUpgradedCount = 0;
       let autoBuildMessagePayload: Record<string, string | number> | undefined = undefined;
       
       // Happiness before considering electricity penalty for spawn checks
@@ -775,7 +793,10 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
               continue; 
             }
 
-            const newHouse: Building = { id: uuidv4(), type: BuildingType.HOUSE, position: selectedTile, builtAt: Date.now() };
+            const hasInfra = hasInfrastructureForHouse(selectedTile, buildingsForNextMonth, state.gridSize);
+            const houseType = hasInfra ? BuildingType.HOUSE : BuildingType.POOR_HOUSE;
+
+            const newHouse: Building = { id: uuidv4(), type: houseType, position: selectedTile, builtAt: Date.now() };
             buildingsForNextMonth.push(newHouse);
             currentHousingCapacityForSpawnConsideration += PEOPLE_PER_HOUSE; 
             housesSpawnedThisMonthCount++;
@@ -790,6 +811,15 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         }
       }
       
+      // Upgrade existing poor houses to normal houses if infrastructure has reached them
+      buildingsForNextMonth = buildingsForNextMonth.map(building => {
+        if (building.type === BuildingType.POOR_HOUSE && hasInfrastructureForHouse(building.position, buildingsForNextMonth, state.gridSize)) {
+          poorHousesUpgradedCount++;
+          return { ...building, type: BuildingType.HOUSE };
+        }
+        return building;
+      });
+
       // Auto-Apartment Spawning on Empty Lots
       if (state.currentMandate >= APARTMENT_UNLOCK_MANDATE &&
           happinessForSpawning >= MIN_HAPPINESS_FOR_APARTMENT_SPAWN 
@@ -836,7 +866,7 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
 
               if (currentResidentialPerQuadrant[quadrantId] >= MIN_HOUSES_IN_QUADRANT_FOR_CONVERSION) {
                   const housesInQuadrant = buildingsForNextMonth.filter(
-                      b => b.type === BuildingType.HOUSE && getQuadrantId(b.position, state.gridSize) === quadrantId
+                      b => (b.type === BuildingType.HOUSE || b.type === BuildingType.POOR_HOUSE) && getQuadrantId(b.position, state.gridSize) === quadrantId
                   );
 
                   if (housesInQuadrant.length >= HOUSES_TO_CONVERT_TO_APARTMENT) {
@@ -901,6 +931,9 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
       } else if (housesSpawnedThisMonthCount > 0) {
         autoBuildMessageKey = 'AUTO_HOUSES_SPAWNED_MESSAGE';
         autoBuildMessagePayload = { count: housesSpawnedThisMonthCount };
+      } else if (poorHousesUpgradedCount > 0) {
+        autoBuildMessageKey = 'AUTO_POOR_HOUSES_UPGRADED_MESSAGE';
+        autoBuildMessagePayload = { count: poorHousesUpgradedCount };
       }
       
       const nextMonth = state.month + 1;

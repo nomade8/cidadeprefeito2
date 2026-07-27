@@ -32,6 +32,7 @@ export const en = {
   // Building Names
   BUILDING_ROAD_NAME: "Road",
   BUILDING_HOUSE_NAME: "House",
+  BUILDING_POOR_HOUSE_NAME: "Modest House",
   BUILDING_MARKET_NAME: "Market",
   BUILDING_PARK_NAME: "Park",
   BUILDING_POWER_PLANT_NAME: "Thermal Plant", 
@@ -44,6 +45,15 @@ export const en = {
   BUILDING_WATER_TREATMENT_PLANT_NAME: "Water Treatment Plant (WTP)", // New
   BUILDING_TECH_INDUSTRY_NAME: "Tech Industry",
   BUILDING_HEAVY_INDUSTRY_NAME: "Heavy Industry",
+
+  // View Layers (Camadas de Visão)
+  VIEW_LAYERS_TITLE: "View Layers",
+  LAYER_NONE: "None",
+  LAYER_ELECTRICITY: "Electricity",
+  LAYER_WATER: "Water Treat.",
+  LAYER_SCHOOL: "School",
+  LAYER_HEALTH: "Health",
+  DASHBOARD_STAT_POOR_HOUSES: "Modest Houses",
 
   // Building Tooltips & Info
   TOOLTIP_COST: "Cost: ${cost}",
@@ -81,6 +91,7 @@ export const en = {
   ROAD_PLACEMENT_START: "Selected: Road. Click on the first point, then on the second point to connect them.",
   AUTO_HOUSING_INFO_MESSAGE: "Houses and Apartments develop automatically. Houses vastly prefer locations with road access, though a very small number may appear in more remote spots. Apartments develop in dense, well-serviced areas (from Mandate {unlockMandate}), especially if space for new houses is limited.",
   AUTO_HOUSES_SPAWNED_MESSAGE: "{count} new houses have developed in the city!",
+  AUTO_POOR_HOUSES_UPGRADED_MESSAGE: "{count} modest house(s) upgraded to normal house(s) after infrastructure reached them!",
   AUTO_APARTMENTS_SPAWNED_MESSAGE: "{count} new apartment blocks developed on empty lots!",
   AUTO_APARTMENT_CONVERSION_MESSAGE: "{count} apartment block(s) developed by converting houses in dense areas!",
   AUTO_APARTMENT_CONVERSION_NO_SPACE_MESSAGE: "{count} apartment block(s) developed by converting houses due to lack of expansion space!",

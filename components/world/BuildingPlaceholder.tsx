@@ -35,6 +35,7 @@ const BuildingPlaceholder: React.FC<BuildingPlaceholderProps> = ({ position, typ
 
     switch (type) {
         case BuildingType.HOUSE:
+        case BuildingType.POOR_HOUSE:
             currentHeight = houseHeight;
             geometry = <boxGeometry args={[houseSize, currentHeight, houseSize]} />;
             break;

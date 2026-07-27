@@ -89,6 +89,63 @@ const RangeIndicator: React.FC<{ position: THREE.Vector3, range: number }> = ({ 
   );
 };
 
+const LayerOverlays: React.FC<{ activeLayer: string; buildings: Building[] }> = ({ activeLayer, buildings }) => {
+  if (!activeLayer || activeLayer === 'NONE') return null;
+
+  let targetTypes: BuildingType[] = [];
+  let range = SERVICE_PROXIMITY_FOR_HOUSING;
+  let color = "#ffffff";
+
+  switch (activeLayer) {
+    case 'ELECTRICITY':
+      targetTypes = [BuildingType.POWER_PLANT, BuildingType.SOLAR_POWER_PLANT, BuildingType.HYDRO_POWER_PLANT];
+      range = POWER_PLANT_INFLUENCE_RANGE;
+      color = "#eab308";
+      break;
+    case 'WATER':
+      targetTypes = [BuildingType.WATER_TREATMENT_PLANT];
+      range = WATER_TREATMENT_INFLUENCE_RANGE;
+      color = "#06b6d4";
+      break;
+    case 'SCHOOL':
+      targetTypes = [BuildingType.SCHOOL];
+      range = SERVICE_PROXIMITY_FOR_HOUSING;
+      color = "#22c55e";
+      break;
+    case 'HEALTH':
+      targetTypes = [BuildingType.HEALTH_POST];
+      range = SERVICE_PROXIMITY_FOR_HOUSING;
+      color = "#ef4444";
+      break;
+    default:
+      return null;
+  }
+
+  const matchingBuildings = buildings.filter(b => targetTypes.includes(b.type));
+  if (matchingBuildings.length === 0) return null;
+
+  return (
+    <group>
+      {matchingBuildings.map((b) => {
+        const worldPos = gridToWorldCoords(b.position.x, b.position.z, 0);
+        const worldRange = range * TILE_SIZE;
+        return (
+          <group key={`layer-ring-${b.id}`} position={[worldPos.x, 0.04, worldPos.z]}>
+            <mesh rotation={[-Math.PI / 2, 0, 0]}>
+              <ringGeometry args={[worldRange - 0.08, worldRange + 0.08, 64]} />
+              <meshBasicMaterial color={color} transparent opacity={0.8} depthWrite={false} />
+            </mesh>
+            <mesh rotation={[-Math.PI / 2, 0, 0]}>
+              <circleGeometry args={[worldRange, 64]} />
+              <meshBasicMaterial color={color} transparent opacity={0.25} depthWrite={false} />
+            </mesh>
+          </group>
+        );
+      })}
+    </group>
+  );
+};
+
 const getBuildingRange = (type: BuildingType): number | null => {
   switch (type) {
     case BuildingType.SCHOOL:
@@ -124,7 +181,8 @@ const Terrain: React.FC = () => {
     currentMandate,
     buildings,
     riverTiles,
-    mountainTiles
+    mountainTiles,
+    activeViewLayer,
   } = useGameLogic();
   const [hoveredGridPos, setHoveredGridPos] = useState<GridPosition | null>(null);
   const [roadStartPos, setRoadStartPos] = useState<GridPosition | null>(null);
@@ -306,6 +364,8 @@ const Terrain: React.FC = () => {
             mountainTiles={mountainTiles}
           />
       )}
+
+      <LayerOverlays activeLayer={activeViewLayer} buildings={buildings} />
     </>
   );
 };

@@ -6,6 +6,7 @@ export type TranslationKeys = keyof typeof en; // Central definition of Translat
 export enum BuildingType {
   ROAD = 'ROAD', // Unified road type
   HOUSE = 'HOUSE',
+  POOR_HOUSE = 'POOR_HOUSE',
   MARKET = 'MARKET',
   PARK = 'PARK',
   POWER_PLANT = 'POWER_PLANT', // Assumed to be fossil fuel / thermal
@@ -19,6 +20,8 @@ export enum BuildingType {
   TECH_INDUSTRY = 'TECH_INDUSTRY',
   HEAVY_INDUSTRY = 'HEAVY_INDUSTRY',
 }
+
+export type ViewLayer = 'NONE' | 'ELECTRICITY' | 'WATER' | 'SCHOOL' | 'HEALTH';
 
 export interface GridPosition {
   x: number;
@@ -96,14 +99,14 @@ export interface GameState {
   isDemolishModeActive: boolean;
   isPaused: boolean;
 
+  // Active View Layer Overlay
+  activeViewLayer: ViewLayer;
+
   // Policies
   policies: PoliciesState;
 
   // Demand State (DEACTIVATED)
   demands: CitizenDemand[];
-
-  // Game Speed / Flow
-  isPaused: boolean;
 
   // Time of Day (0 to 1, where 0 is start of day, 0.5 is noon, 1.0 is end of day)
   timeOfDay: number; 
@@ -152,6 +155,7 @@ export type GameAction =
   | { type: 'SET_POLICY'; payload: { policy: keyof PoliciesState; value: PolicyLevel | boolean } }
   | { type: 'TOGGLE_PAUSE' }
   | { type: 'UPDATE_TIME_OF_DAY'; payload: number }
+  | { type: 'TOGGLE_VIEW_LAYER'; payload: ViewLayer }
   | { type: 'DISMISS_DEMAND'; payload: string };
 
 export interface GameContextType extends GameState {

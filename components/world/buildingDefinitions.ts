@@ -95,6 +95,46 @@ const houseParts = [
   },
 ];
 
+// --- Poor House (Casa Pobre) Definition ---
+const poorHouseBaseMaterial = new THREE.MeshStandardMaterial({ color: "#7A5230", roughness: 0.9, metalness: 0.05 });
+const poorHouseRoofMaterial = new THREE.MeshStandardMaterial({ color: "#504538", roughness: 0.8, metalness: 0.2 });
+const poorHouseDoorMaterial = new THREE.MeshStandardMaterial({ color: "#3E2723", roughness: 0.9 });
+
+const poorHouseBaseWidth = TILE_SIZE * 0.45;
+const poorHouseBaseDepth = TILE_SIZE * 0.45;
+const poorHouseBaseHeight = TILE_SIZE * 0.24;
+const poorHouseRoofHeight = TILE_SIZE * 0.1;
+
+const poorHouseBaseGeo = new THREE.BoxGeometry(poorHouseBaseWidth, poorHouseBaseHeight, poorHouseBaseDepth);
+const poorHouseRoofGeo = new THREE.BoxGeometry(poorHouseBaseWidth * 1.08, poorHouseRoofHeight, poorHouseBaseDepth * 1.08);
+
+const poorHouseParts = [
+  {
+    name: 'base',
+    geometry: poorHouseBaseGeo,
+    material: poorHouseBaseMaterial,
+    relativeTransform: new THREE.Matrix4().setPosition(0, poorHouseBaseHeight / 2, 0),
+  },
+  {
+    name: 'roof',
+    geometry: poorHouseRoofGeo,
+    material: poorHouseRoofMaterial,
+    relativeTransform: new THREE.Matrix4().makeRotationX(0.08).setPosition(0, poorHouseBaseHeight + poorHouseRoofHeight / 2, 0),
+  },
+  {
+    name: 'door',
+    geometry: doorGeo,
+    material: poorHouseDoorMaterial,
+    relativeTransform: new THREE.Matrix4().setPosition(0, (TILE_SIZE * 0.18) / 2, poorHouseBaseDepth / 2 + 0.005),
+  },
+  {
+    name: 'window',
+    geometry: windowGeo,
+    material: glassMaterial,
+    relativeTransform: new THREE.Matrix4().setPosition(-poorHouseBaseWidth * 0.2, poorHouseBaseHeight * 0.55, poorHouseBaseDepth / 2 + 0.005),
+  },
+];
+
 // --- Road Definition ---
 const roadThickness = TILE_SIZE * 0.1;
 const roadDimension = TILE_SIZE * 0.95;
@@ -527,6 +567,7 @@ export interface BuildingTypeDefinition {
 
 export const buildingDefinitions: Record<BuildingType, BuildingTypeDefinition | undefined> = {
   [BuildingType.HOUSE]: { parts: houseParts },
+  [BuildingType.POOR_HOUSE]: { parts: poorHouseParts },
   [BuildingType.ROAD]: { parts: roadParts },
   [BuildingType.PARK]: { parts: parkParts },
   [BuildingType.MARKET]: { parts: marketParts },

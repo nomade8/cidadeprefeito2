@@ -32,6 +32,7 @@ export const ptBR = {
   // Building Names
   BUILDING_ROAD_NAME: "Estrada",
   BUILDING_HOUSE_NAME: "Casa",
+  BUILDING_POOR_HOUSE_NAME: "Casa Pobre",
   BUILDING_MARKET_NAME: "Mercado",
   BUILDING_PARK_NAME: "Parque",
   BUILDING_POWER_PLANT_NAME: "Usina Termelétrica", 
@@ -44,6 +45,15 @@ export const ptBR = {
   BUILDING_WATER_TREATMENT_PLANT_NAME: "Estação de Tratamento de Água (ETA)", // New
   BUILDING_TECH_INDUSTRY_NAME: "Indústria Tecnológica",
   BUILDING_HEAVY_INDUSTRY_NAME: "Indústria Pesada",
+
+  // View Layers (Camadas de Visão)
+  VIEW_LAYERS_TITLE: "Camadas de Visão",
+  LAYER_NONE: "Nenhuma",
+  LAYER_ELECTRICITY: "Energia",
+  LAYER_WATER: "Trat. Água",
+  LAYER_SCHOOL: "Escola",
+  LAYER_HEALTH: "Saúde",
+  DASHBOARD_STAT_POOR_HOUSES: "Casas Pobres",
 
   // Building Tooltips & Info
   TOOLTIP_COST: "Custo: R${cost}",
@@ -81,6 +91,7 @@ export const ptBR = {
   ROAD_PLACEMENT_START: "Selecionado: Estrada. Clique no primeiro ponto e depois no segundo ponto para conectá-los.",
   AUTO_HOUSING_INFO_MESSAGE: "Casas e Apartamentos se desenvolvem automaticamente. Casas preferem imensamente locais com acesso à estrada, embora um número muito pequeno possa surgir em locais mais remotos. Apartamentos se desenvolvem em áreas densas e bem servidas (a partir do Mandato {unlockMandate}), especialmente se o espaço para novas casas for limitado.",
   AUTO_HOUSES_SPAWNED_MESSAGE: "{count} novas casas se desenvolveram na cidade!",
+  AUTO_POOR_HOUSES_UPGRADED_MESSAGE: "{count} casa(s) pobre(s) foi/foram melhorada(s) para casa(s) normal(is) após a chegada da infraestrutura!",
   AUTO_APARTMENTS_SPAWNED_MESSAGE: "{count} novos blocos de apartamentos surgiram em lotes vagos!",
   AUTO_APARTMENT_CONVERSION_MESSAGE: "{count} bloco(s) de apartamentos surgiu/surgiram convertendo casas em áreas densas!",
   AUTO_APARTMENT_CONVERSION_NO_SPACE_MESSAGE: "{count} bloco(s) de apartamentos surgiu/surgiram convertendo casas devido à falta de espaço para expansão!",

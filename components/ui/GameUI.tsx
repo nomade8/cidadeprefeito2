@@ -29,7 +29,8 @@ import {
   ChevronUp,
   LayoutGrid,
   ColumnsIcon,
-  GripHorizontal
+  GripHorizontal,
+  Eye
 } from 'lucide-react';
 
 const StatDisplay: React.FC<{ label: string; value: string | number; className?: string, icon?: string }> = ({ label, value, className, icon }) => (
@@ -56,6 +57,8 @@ const GameUI: React.FC<GameUIProps> = ({ containerRef }) => {
     mandateEnded,
     currentMandate,
     isDemolishModeActive,
+    activeViewLayer,
+    toggleViewLayer,
     isPaused, 
     togglePause, 
     selectBuildingType, 
@@ -310,6 +313,79 @@ const GameUI: React.FC<GameUIProps> = ({ containerRef }) => {
                 {isPaused && (
                   <p className="text-[10px] text-sky-300 mt-2 italic font-semibold text-center">{t('GAME_PAUSED_MESSAGE')}</p>
                 )}
+
+                {/* Camadas de Visão (View Layers) Section */}
+                <div className="mt-2 pt-2 border-t border-slate-700/60">
+                  <div className="text-[10px] uppercase font-bold text-sky-400/90 mb-1.5 flex items-center gap-1.5 px-0.5">
+                    <Eye size={12} className="text-sky-400" />
+                    <span>{t('VIEW_LAYERS_TITLE')}</span>
+                  </div>
+                  <div className={`grid gap-1 ${isVertical ? 'grid-cols-1' : 'grid-cols-4 sm:grid-cols-4'}`}>
+                    <Button
+                      onClick={() => toggleViewLayer('ELECTRICITY')}
+                      active={activeViewLayer === 'ELECTRICITY'}
+                      variant="secondary"
+                      size="sm"
+                      title={t('LAYER_ELECTRICITY')}
+                      className={`!p-1 flex flex-col items-center justify-center h-9 relative transition-all ${
+                        activeViewLayer === 'ELECTRICITY' 
+                          ? '!bg-yellow-500/20 !border-yellow-400 text-yellow-300 font-bold shadow-sm shadow-yellow-500/30' 
+                          : 'hover:bg-slate-800 text-slate-300'
+                      }`}
+                    >
+                      <Zap size={14} className={activeViewLayer === 'ELECTRICITY' ? 'text-yellow-400' : 'text-slate-400'} />
+                      <span className="text-[9px] leading-tight mt-0.5">{t('LAYER_ELECTRICITY')}</span>
+                    </Button>
+
+                    <Button
+                      onClick={() => toggleViewLayer('WATER')}
+                      active={activeViewLayer === 'WATER'}
+                      variant="secondary"
+                      size="sm"
+                      title={t('LAYER_WATER')}
+                      className={`!p-1 flex flex-col items-center justify-center h-9 relative transition-all ${
+                        activeViewLayer === 'WATER' 
+                          ? '!bg-cyan-500/20 !border-cyan-400 text-cyan-300 font-bold shadow-sm shadow-cyan-500/30' 
+                          : 'hover:bg-slate-800 text-slate-300'
+                      }`}
+                    >
+                      <Droplets size={14} className={activeViewLayer === 'WATER' ? 'text-cyan-400' : 'text-slate-400'} />
+                      <span className="text-[9px] leading-tight mt-0.5">{t('LAYER_WATER')}</span>
+                    </Button>
+
+                    <Button
+                      onClick={() => toggleViewLayer('SCHOOL')}
+                      active={activeViewLayer === 'SCHOOL'}
+                      variant="secondary"
+                      size="sm"
+                      title={t('LAYER_SCHOOL')}
+                      className={`!p-1 flex flex-col items-center justify-center h-9 relative transition-all ${
+                        activeViewLayer === 'SCHOOL' 
+                          ? '!bg-emerald-500/20 !border-emerald-400 text-emerald-300 font-bold shadow-sm shadow-emerald-500/30' 
+                          : 'hover:bg-slate-800 text-slate-300'
+                      }`}
+                    >
+                      <GraduationCap size={14} className={activeViewLayer === 'SCHOOL' ? 'text-emerald-400' : 'text-slate-400'} />
+                      <span className="text-[9px] leading-tight mt-0.5">{t('LAYER_SCHOOL')}</span>
+                    </Button>
+
+                    <Button
+                      onClick={() => toggleViewLayer('HEALTH')}
+                      active={activeViewLayer === 'HEALTH'}
+                      variant="secondary"
+                      size="sm"
+                      title={t('LAYER_HEALTH')}
+                      className={`!p-1 flex flex-col items-center justify-center h-9 relative transition-all ${
+                        activeViewLayer === 'HEALTH' 
+                          ? '!bg-rose-500/20 !border-rose-400 text-rose-300 font-bold shadow-sm shadow-rose-500/30' 
+                          : 'hover:bg-slate-800 text-slate-300'
+                      }`}
+                    >
+                      <HeartPulse size={14} className={activeViewLayer === 'HEALTH' ? 'text-rose-400' : 'text-slate-400'} />
+                      <span className="text-[9px] leading-tight mt-0.5">{t('LAYER_HEALTH')}</span>
+                    </Button>
+                  </div>
+                </div>
               </div>
             )}
           </div>

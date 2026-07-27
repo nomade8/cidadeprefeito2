@@ -43,12 +43,11 @@ const StatItem: React.FC<{ label: string; value: string | number; unit?: string;
 
 const Dashboard: React.FC<DashboardProps> = ({ isOpen, onClose }) => {
   const {
-    money, month, totalHouses, totalRoads, totalMarkets, totalParks, 
+    money, month, totalHouses, totalPoorHouses, totalRoads, totalMarkets, totalParks, 
     totalFossilPowerPlants, totalSolarPowerPlants, totalHydroPowerPlants, 
     totalApartments, totalSchools, totalHealthPosts, totalPoliceStations, 
     totalWaterTreatmentPlants, totalTechIndustries, totalHeavyIndustries,
     monthlyIncome, monthlyMaintenance, population, housingCapacity, totalJobs,
-    // desiredPopulation, // Removed
     netCashFlow, happiness, gameOver, translate: t, currentLanguage,
     trafficCongestion, activeEvents
   } = useGameLogic();
@@ -65,6 +64,7 @@ const Dashboard: React.FC<DashboardProps> = ({ isOpen, onClose }) => {
 
   const buildingChartData = [
     { label: t('BUILDING_HOUSE_NAME'), value: totalHouses, color: "bg-blue-500" },
+    { label: t('BUILDING_POOR_HOUSE_NAME' as TranslationKeys), value: totalPoorHouses, color: "bg-amber-700" },
     { label: t('BUILDING_APARTMENT_NAME'), value: totalApartments, color: "bg-purple-500" }, 
     { label: t('BUILDING_MARKET_NAME'), value: totalMarkets, color: "bg-yellow-500" },
     { label: t('BUILDING_PARK_NAME'), value: totalParks, color: "bg-emerald-500" },
@@ -149,6 +149,7 @@ const Dashboard: React.FC<DashboardProps> = ({ isOpen, onClose }) => {
         <h3 className="text-lg font-semibold text-sky-300 mt-4 mb-1 pt-3 border-t border-slate-700">{t('DASHBOARD_SECTION_STRUCTURES')}</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-4">
             <StatItem label={t('DASHBOARD_STAT_HOUSES')} value={totalHouses} icon="🏡" currentLanguage={currentLanguage}/>
+            <StatItem label={t('DASHBOARD_STAT_POOR_HOUSES' as TranslationKeys)} value={totalPoorHouses} icon="🏚️" currentLanguage={currentLanguage}/>
             <StatItem label={t('DASHBOARD_STAT_APARTMENTS')} value={totalApartments} icon="🏢" currentLanguage={currentLanguage}/>
             <StatItem label={t('DASHBOARD_STAT_MARKETS')} value={totalMarkets} icon="🏪" currentLanguage={currentLanguage}/>
             <StatItem label={t('DASHBOARD_STAT_PARKS')} value={totalParks} icon="🌳" currentLanguage={currentLanguage}/>

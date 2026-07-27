@@ -35,6 +35,17 @@ export const BUILDING_DATA: BuildingConfig = {
     waterQualityEffectMonthly: -0.02,
     biodiversityEffectMonthly: DEFAULT_BIODIVERSITY_EFFECT_URBAN,
   },
+  [BuildingType.POOR_HOUSE]: { 
+    cost: 100, 
+    income: 15,
+    housingProvided: PEOPLE_PER_HOUSE,
+    capacity: PEOPLE_PER_HOUSE,
+    capacityUnit: "UNIT_CITIZENS",
+    electricityConsumption: DEFAULT_ELECTRICITY_CONSUMPTION * 0.2,
+    airQualityEffectMonthly: -0.03,
+    waterQualityEffectMonthly: -0.03,
+    biodiversityEffectMonthly: DEFAULT_BIODIVERSITY_EFFECT_URBAN,
+  },
   [BuildingType.MARKET]: {
     cost: 1000, 
     income: 150, 
