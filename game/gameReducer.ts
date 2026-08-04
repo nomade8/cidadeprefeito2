@@ -56,6 +56,8 @@ import {
   MIN_RESIDENTIAL_FOR_FIRST_MARKET,
   RESIDENTIAL_PER_MARKET_RATIO,
   PARK_INFLUENCE_RANGE,
+  POWER_PLANT_INFLUENCE_RANGE,
+  WATER_TREATMENT_INFLUENCE_RANGE,
   DEMAND_LIFESPAN_MONTHS
 } from './settings';
 import { BUILDING_DATA } from '../data/buildingData';
@@ -146,14 +148,16 @@ export const initialState: GameState = {
 };
 
 function hasInfrastructureForHouse(position: GridPosition, buildings: Building[], gridSize: number): boolean {
-  const hasRoad = isBuildingTypeNearby(position, buildings, gridSize, ROAD_PROXIMITY_FOR_HOUSING, BuildingType.ROAD);
-  const serviceTypes = [
-    BuildingType.SCHOOL, BuildingType.HEALTH_POST, BuildingType.POLICE_STATION, 
-    BuildingType.PARK, BuildingType.MARKET, BuildingType.POWER_PLANT, 
-    BuildingType.SOLAR_POWER_PLANT, BuildingType.HYDRO_POWER_PLANT, BuildingType.WATER_TREATMENT_PLANT
-  ];
-  const hasService = serviceTypes.some(type => isBuildingTypeNearby(position, buildings, gridSize, SERVICE_PROXIMITY_FOR_HOUSING, type));
-  return hasRoad || hasService;
+  const hasElectricity = 
+    isBuildingTypeNearby(position, buildings, gridSize, POWER_PLANT_INFLUENCE_RANGE, BuildingType.POWER_PLANT) ||
+    isBuildingTypeNearby(position, buildings, gridSize, POWER_PLANT_INFLUENCE_RANGE, BuildingType.SOLAR_POWER_PLANT) ||
+    isBuildingTypeNearby(position, buildings, gridSize, POWER_PLANT_INFLUENCE_RANGE, BuildingType.HYDRO_POWER_PLANT);
+
+  const hasWaterTreatment = 
+    isBuildingTypeNearby(position, buildings, gridSize, WATER_TREATMENT_INFLUENCE_RANGE, BuildingType.WATER_TREATMENT_PLANT);
+
+  // Se tiver um dos dois (luz ou eletricidade/água), já tem infraestrutura para ser casa normal
+  return hasElectricity || hasWaterTreatment;
 }
 
 // Helper to shuffle an array
@@ -811,11 +815,14 @@ export function gameReducer(state: GameState, action: GameAction): GameState {
         }
       }
       
-      // Upgrade existing poor houses to normal houses if infrastructure has reached them
+      // Update existing houses and poor houses based on current infrastructure
       buildingsForNextMonth = buildingsForNextMonth.map(building => {
-        if (building.type === BuildingType.POOR_HOUSE && hasInfrastructureForHouse(building.position, buildingsForNextMonth, state.gridSize)) {
+        const hasInfra = hasInfrastructureForHouse(building.position, buildingsForNextMonth, state.gridSize);
+        if (building.type === BuildingType.POOR_HOUSE && hasInfra) {
           poorHousesUpgradedCount++;
           return { ...building, type: BuildingType.HOUSE };
+        } else if (building.type === BuildingType.HOUSE && !hasInfra) {
+          return { ...building, type: BuildingType.POOR_HOUSE };
         }
         return building;
       });
