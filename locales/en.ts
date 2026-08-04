@@ -53,6 +53,7 @@ export const en = {
   LAYER_WATER: "Water Treat.",
   LAYER_SCHOOL: "School",
   LAYER_HEALTH: "Health",
+  LAYER_SECURITY: "Security",
   DASHBOARD_STAT_POOR_HOUSES: "Modest Houses",
 
   // Building Tooltips & Info

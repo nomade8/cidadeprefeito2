@@ -320,7 +320,7 @@ const GameUI: React.FC<GameUIProps> = ({ containerRef }) => {
                     <Eye size={12} className="text-sky-400" />
                     <span>{t('VIEW_LAYERS_TITLE')}</span>
                   </div>
-                  <div className={`grid gap-1 ${isVertical ? 'grid-cols-1' : 'grid-cols-4 sm:grid-cols-4'}`}>
+                  <div className={`grid gap-1 ${isVertical ? 'grid-cols-1' : 'grid-cols-5 sm:grid-cols-5'}`}>
                     <Button
                       onClick={() => toggleViewLayer('ELECTRICITY')}
                       active={activeViewLayer === 'ELECTRICITY'}
@@ -383,6 +383,22 @@ const GameUI: React.FC<GameUIProps> = ({ containerRef }) => {
                     >
                       <HeartPulse size={14} className={activeViewLayer === 'HEALTH' ? 'text-rose-400' : 'text-slate-400'} />
                       <span className="text-[9px] leading-tight mt-0.5">{t('LAYER_HEALTH')}</span>
+                    </Button>
+
+                    <Button
+                      onClick={() => toggleViewLayer('SECURITY')}
+                      active={activeViewLayer === 'SECURITY'}
+                      variant="secondary"
+                      size="sm"
+                      title={t('LAYER_SECURITY')}
+                      className={`!p-1 flex flex-col items-center justify-center h-9 relative transition-all ${
+                        activeViewLayer === 'SECURITY' 
+                          ? '!bg-blue-500/20 !border-blue-400 text-blue-300 font-bold shadow-sm shadow-blue-500/30' 
+                          : 'hover:bg-slate-800 text-slate-300'
+                      }`}
+                    >
+                      <Shield size={14} className={activeViewLayer === 'SECURITY' ? 'text-blue-400' : 'text-slate-400'} />
+                      <span className="text-[9px] leading-tight mt-0.5">{t('LAYER_SECURITY')}</span>
                     </Button>
                   </div>
                 </div>

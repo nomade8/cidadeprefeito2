@@ -53,6 +53,7 @@ export const ptBR = {
   LAYER_WATER: "Trat. Água",
   LAYER_SCHOOL: "Escola",
   LAYER_HEALTH: "Saúde",
+  LAYER_SECURITY: "Segurança",
   DASHBOARD_STAT_POOR_HOUSES: "Casas Pobres",
 
   // Building Tooltips & Info

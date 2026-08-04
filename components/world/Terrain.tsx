@@ -117,6 +117,11 @@ const LayerOverlays: React.FC<{ activeLayer: string; buildings: Building[] }> = 
       range = SERVICE_PROXIMITY_FOR_HOUSING;
       color = "#ef4444";
       break;
+    case 'SECURITY':
+      targetTypes = [BuildingType.POLICE_STATION];
+      range = SERVICE_PROXIMITY_FOR_HOUSING;
+      color = "#3b82f6";
+      break;
     default:
       return null;
   }
@@ -124,22 +129,39 @@ const LayerOverlays: React.FC<{ activeLayer: string; buildings: Building[] }> = 
   const matchingBuildings = buildings.filter(b => targetTypes.includes(b.type));
   if (matchingBuildings.length === 0) return null;
 
+  const coveredSet = new Set<string>();
+  const rangeSq = range * range;
+
+  for (const b of matchingBuildings) {
+    const bx = b.position.x;
+    const bz = b.position.z;
+    for (let dx = -range; dx <= range; dx++) {
+      for (let dz = -range; dz <= range; dz++) {
+        if (dx * dx + dz * dz <= rangeSq) {
+          const x = bx + dx;
+          const z = bz + dz;
+          if (x >= 0 && x < GRID_SIZE && z >= 0 && z < GRID_SIZE) {
+            coveredSet.add(`${x},${z}`);
+          }
+        }
+      }
+    }
+  }
+
+  const coveredTiles = Array.from(coveredSet).map(key => {
+    const [x, z] = key.split(',').map(Number);
+    return { x, z };
+  });
+
   return (
     <group>
-      {matchingBuildings.map((b) => {
-        const worldPos = gridToWorldCoords(b.position.x, b.position.z, 0);
-        const worldRange = range * TILE_SIZE;
+      {coveredTiles.map(tile => {
+        const worldPos = gridToWorldCoords(tile.x, tile.z, 0.035);
         return (
-          <group key={`layer-ring-${b.id}`} position={[worldPos.x, 0.04, worldPos.z]}>
-            <mesh rotation={[-Math.PI / 2, 0, 0]}>
-              <ringGeometry args={[worldRange - 0.08, worldRange + 0.08, 64]} />
-              <meshBasicMaterial color={color} transparent opacity={0.8} depthWrite={false} />
-            </mesh>
-            <mesh rotation={[-Math.PI / 2, 0, 0]}>
-              <circleGeometry args={[worldRange, 64]} />
-              <meshBasicMaterial color={color} transparent opacity={0.25} depthWrite={false} />
-            </mesh>
-          </group>
+          <mesh key={`layer-tile-${tile.x}-${tile.z}`} position={worldPos} rotation={[-Math.PI / 2, 0, 0]}>
+            <planeGeometry args={[TILE_SIZE * 0.96, TILE_SIZE * 0.96]} />
+            <meshBasicMaterial color={color} transparent opacity={0.45} depthWrite={false} side={THREE.DoubleSide} />
+          </mesh>
         );
       })}
     </group>

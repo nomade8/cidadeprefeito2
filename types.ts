@@ -21,7 +21,7 @@ export enum BuildingType {
   HEAVY_INDUSTRY = 'HEAVY_INDUSTRY',
 }
 
-export type ViewLayer = 'NONE' | 'ELECTRICITY' | 'WATER' | 'SCHOOL' | 'HEALTH';
+export type ViewLayer = 'NONE' | 'ELECTRICITY' | 'WATER' | 'SCHOOL' | 'HEALTH' | 'SECURITY';
 
 export interface GridPosition {
   x: number;
